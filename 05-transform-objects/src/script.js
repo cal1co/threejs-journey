@@ -15,9 +15,9 @@ const scene = new THREE.Scene()
 // const mesh = new THREE.Mesh(geometry, material)
 // scene.add(mesh)
 const group = new THREE.Group()
-group.position.y = 1
+group.position.y = 0.5
 group.scale.y = 2
-group.rotation.y = 1
+group.rotation.y = 0.75
 scene.add(group)
 
 const cube1 = new THREE.Mesh(
