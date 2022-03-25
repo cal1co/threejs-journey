@@ -27,6 +27,58 @@ const sizes = {
     height: 600
 }
 
+window.addEventListener('resize', () => {
+
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
+
+    // Update camera 
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
+    renderer.setSize(sizes.width, sizes.height)
+})
+
+window.addEventListener('dblclick', () => {
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+
+
+    // if (!document.fullscreenElement){
+    //     canvas.requestFullscreen()
+    // } else {
+    //     document.exitFullscreen()
+    // }
+
+    if(!fullscreenElement)
+    {
+        if(canvas.requestFullscreen)
+        {
+            canvas.requestFullscreen()
+        }
+        else if(canvas.webkitRequestFullscreen)
+        {
+            canvas.webkitRequestFullscreen()
+        }
+    }
+    else
+    {
+        if(document.exitFullscreen)
+        {
+            document.exitFullscreen()
+        }
+        else if(document.webkitExitFullscreen)
+        {
+            document.webkitExitFullscreen()
+        }
+    }
+
+
+})
+
+
+
 /**
  * Camera
  */
@@ -46,6 +98,7 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
  * Animate
@@ -61,9 +114,11 @@ const tick = () =>
 
     // Render
     renderer.render(scene, camera)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
+
 }
 
 tick()
