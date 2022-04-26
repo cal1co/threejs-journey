@@ -2,6 +2,51 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+
+
+// TEXTURES
+// const loadingManager = new THREE.LoadingManager()
+
+// loadingManager.onStart = () => {
+//     console.log('onStart');
+// }
+// loadingManager.onLoad = () => {
+//     console.log('onLoad');
+// }
+// loadingManager.onProgress = () => {
+//     console.log('onProgress');
+// }
+// loadingManager.onError = () => {
+//     console.log('onError');
+// }
+// const textureLoader = new THREE.TextureLoader(loadingManager)
+const textureLoader = new THREE.TextureLoader()
+const colorTexture = textureLoader.load('/textures/minecraft.png')
+const alphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+const heightTexture = textureLoader.load('/textures/door/height.jpg')
+const normalTexture = textureLoader.load('/textures/door/normal.jpg')
+const ambientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
+const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
+const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
+
+// colorTexture.repeat.x = 2
+// colorTexture.repeat.y = 3
+// colorTexture.wrapS = THREE.MirroredRepeatWrapping
+// colorTexture.wrapT = THREE.MirroredRepeatWrapping
+
+// colorTexture.offset.x = 0.5
+// colorTexture.offset.y = 0.5
+
+// colorTexture.rotation = Math.PI / 4
+// colorTexture.center.x = 0.5
+// colorTexture.center.y = 0.5
+
+
+colorTexture.generateMipmaps = false 
+// colorTexture.minFilter = THREE.NearestFilter
+colorTexture.magFilter = THREE.NearestFilter
+
+
 /**
  * Base
  */
@@ -15,7 +60,8 @@ const scene = new THREE.Scene()
  * Object
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+// console.log(geometry.attributes)
+const material = new THREE.MeshBasicMaterial({ map:colorTexture })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
