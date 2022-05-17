@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { PointLightHelper } from 'three'
 
 /**
  * Base
@@ -32,6 +33,55 @@ gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001)
 gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(directionalLight)
 
+directionalLight.castShadow = true
+
+directionalLight.shadow.mapSize.width = 1024 
+directionalLight.shadow.mapSize.height = 1024 
+directionalLight.shadow.camera.top = 2 
+directionalLight.shadow.camera.bottom = -2 
+directionalLight.shadow.camera.left = -2 
+directionalLight.shadow.camera.right = 2 
+directionalLight.shadow.camera.near = 1 
+directionalLight.shadow.camera.far = 6
+directionalLight.shadow.radius = 10
+
+
+
+const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+directionalLightCameraHelper.visible = false
+scene.add(directionalLightCameraHelper)
+
+
+// Spotlight
+
+const spotLight = new THREE.SpotLight(0xffffff, 0.4, 10, Math.PI * 0.3)
+
+spotLight.castShadow = true
+spotLight.shadow.mapSize.width = 1024
+spotLight.shadow.mapSize.height = 1024
+spotLight.shadow.camera.fov = 30
+spotLight.shadow.camera.near = 1
+spotLight.shadow.camera.far = 6
+
+spotLight.position.set(0,2,2)
+scene.add(spotLight)
+scene.add(spotLight.target)
+
+const spotLightCamerHelper = new THREE.CameraHelper(spotLight.shadow.camera)
+scene.add(spotLightCamerHelper)
+
+
+// Point Light
+const pointLight = new THREE.PointLight(0xffffff, 0.3)
+
+pointLight.castShadow = true
+
+pointLight.position.set(- 1, 1, 0)
+scene.add(pointLight)
+
+const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera)
+scene.add(pointLightCameraHelper)
+
 /**
  * Materials
  */
@@ -51,12 +101,13 @@ const sphere = new THREE.Mesh(
 const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(5, 5),
     material
-)
+    )
 plane.rotation.x = - Math.PI * 0.5
 plane.position.y = - 0.5
 
 scene.add(sphere, plane)
-
+sphere.castShadow = true
+plane.receiveShadow = true
 /**
  * Sizes
  */
@@ -102,6 +153,10 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
 
 /**
  * Animate
