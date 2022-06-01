@@ -67,6 +67,7 @@ sphereBody.applyLocalForce(new CANNON.Vec3(150, 0, 0), new CANNON.Vec3(0, 0, 0))
 world.addBody(sphereBody)
 
 
+
 // Floor
 const floorShape = new CANNON.Plane()
 const floorBody = new CANNON.Body()
